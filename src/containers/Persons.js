@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-
+import { connect } from 'react-redux';
 import Person from '../components/Person/Person';
 import AddPerson from '../components/AddPerson/AddPerson';
 
+import * as actionTypes from '../store/actions';
+
 class Persons extends Component {
-    state = {
+/*    state = {
         persons: []
     }
 
@@ -24,21 +26,34 @@ class Persons extends Component {
             return { persons: prevState.persons.filter(person => person.id !== personId)}
         } );
     }
-
+*/
     render () {
         return (
             <div>
-                <AddPerson personAdded={this.personAddedHandler} />
-                {this.state.persons.map(person => (
+                <AddPerson personAdded={this.props.onAddPerson} />
+                {this.props.prsns.map(person => (
                     <Person 
                         key={person.id}
                         name={person.name} 
                         age={person.age} 
-                        clicked={() => this.personDeletedHandler(person.id)}/>
+                        clicked={() => this.props.onDelete(person.id)}/>
                 ))}
             </div>
         );
     }
 }
 
-export default Persons;
+const mapStateToProps = (reduxState) => {
+    return {
+        prsns: reduxState.persons
+    }
+}
+
+const mapDipatchToProps = (dispatch) => {
+    return{
+        onAddPerson: () =>  dispatch({ type: actionTypes.ADDPERSON }),
+        onDelete: (id) => dispatch({ type: actionTypes.DELETEPERSON, personId: id })
+    }
+}
+
+export default connect(mapStateToProps, mapDipatchToProps)(Persons);
