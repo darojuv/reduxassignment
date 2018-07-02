@@ -29,7 +29,7 @@ class Persons extends Component {
 */
     render () {
         return (
-            <div>
+            <div>               
                 <AddPerson personAdded={this.props.onAddPerson} />
                 {this.props.prsns.map(person => (
                     <Person 
@@ -51,7 +51,7 @@ const mapStateToProps = (reduxState) => {
 
 const mapDipatchToProps = (dispatch) => {
     return{
-        onAddPerson: () =>  dispatch({ type: actionTypes.ADDPERSON }),
+        onAddPerson: (pname, page) =>  dispatch({ type: actionTypes.ADDPERSON, personData:{name:pname, age:page} }),
         onDelete: (id) => dispatch({ type: actionTypes.DELETEPERSON, personId: id })
     }
 }
